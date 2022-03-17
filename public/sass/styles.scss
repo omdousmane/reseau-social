@@ -2,9 +2,245 @@
 ici redefinir les variable oubine cree un fichier 
 dns le quel on definis nos variable ensuite l'importer en 1er
 */
+$white: #fff;
+$primary: #e51c25;
+$bg-body: #e5e5e5;
+$border-radius: 10px;
 
-// $primary: ;
-h2 {
-  color: yellow;
+@import "bootstrap/functions";
+@import "bootstrap/variables";
+
+@import "header";
+@import "footer";
+@import "menu";
+@import "utilities";
+@import "modals";
+// @import "chat";
+
+@import "profil";
+@import "register";
+@import "search";
+
+// // scss-docs-start import-stack
+// Configuration
+
+@import "bootstrap/mixins";
+@import "bootstrap/utilities";
+
+// Layout & components
+@import "bootstrap/root";
+@import "bootstrap/reboot";
+@import "bootstrap/type";
+@import "bootstrap/alert";
+@import "bootstrap/badge";
+@import "bootstrap/images";
+@import "bootstrap/containers";
+@import "bootstrap/card";
+@import "bootstrap/tables";
+@import "bootstrap/forms";
+@import "bootstrap/buttons";
+@import "bootstrap/dropdown";
+@import "bootstrap/modal";
+@import "bootstrap/forms";
+@import "bootstrap/close";
+
+html {
+  font-family: "Lucida Sans", sans-serif;
 }
-@import "bootstrap/bootstrap.scss";
+
+body {
+  background-color: #e5e5e5;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.row::after {
+  content: "";
+  clear: both;
+  display: table;
+}
+
+[class*="col-"] {
+  float: left;
+}
+
+main {
+  // border: 1px solid red;
+  // background: green;
+  position: relative;
+  width: calc(100% - 50px);
+  // height: calc(100vh - 8vh);
+  margin: 0 auto;
+  padding-top: 50px;
+}
+// .border {
+//   border: 1px solid blue;
+// }
+
+h3 {
+  text-transform: lowercase;
+}
+
+/*les boites de categories*/
+.main-categories {
+  width: 100%;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
+  align-items: center;
+  align-content: center;
+  gap: 10px;
+}
+.categories--content {
+  width: 200px;
+  flex: 1 1 auto;
+  margin-bottom: 10px;
+  height: 210px;
+  background: #ffffff;
+  border-radius: $border-radius;
+}
+
+/*block-posts*/
+
+.block-posts {
+  width: 100%;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
+  // margin: 0 auto;
+  align-content: center;
+}
+.posts,
+.aside {
+  border-radius: $border-radius;
+  flex: 1 1 auto;
+  padding: 0.625rem;
+  background-color: $white;
+}
+.posts {
+  margin-bottom: 1.25rem;
+  background: $white;
+}
+
+@media only screen and (min-width: 768px) {
+  /* For desktop: */
+  .col-1 {
+    width: 8.33%;
+  }
+  .col-2 {
+    width: 16.66%;
+  }
+  .col-3 {
+    width: 25%;
+  }
+  .col-4 {
+    // width: calc(33.33% ;
+    width: 33.33%;
+    margin-left: 20px;
+  }
+  .col-5 {
+    width: 41.66%;
+  }
+  .col-6 {
+    width: 50%;
+  }
+  .col-7 {
+    width: 58.33%;
+  }
+  .col-8 {
+    width: calc(66.66% - 20px);
+  }
+  .col-9 {
+    width: 75%;
+  }
+  .col-10 {
+    width: 83.33%;
+  }
+  .col-11 {
+    width: 91.66%;
+  }
+  .col-12 {
+    width: 100%;
+  }
+
+  .header-desktop {
+    // background-color: yellow;
+    width: 100%;
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+    align-items: center;
+    &__form {
+      width: 30rem;
+      position: relative;
+      img {
+        position: absolute;
+        top: 5px;
+      }
+      ::placeholder {
+        padding-left: 1.4rem;
+      }
+    }
+    &__content-right {
+      display: flex;
+      flex-flow: row nowrap;
+      justify-content: space-between;
+    }
+  }
+
+  .header-mobile {
+    display: none;
+  }
+}
+
+@media only screen and (min-width: 960px) {
+  /* For desktop: */
+  .col-lg-1 {
+    width: 8.33%;
+  }
+  .col-lg-2 {
+    width: 16.66%;
+  }
+  .col-lg-3 {
+    width: 25%;
+  }
+  .col-lg-4 {
+    width: 33.33%;
+    margin-left: 20px;
+  }
+  .col-lg-5 {
+    width: 41.66%;
+  }
+  .col-lg-6 {
+    width: 50%;
+  }
+  .col-lg-7 {
+    width: 58.33%;
+  }
+  .col-lg-8 {
+    width: calc(66.66% - 20px);
+  }
+  .col-lg-9 {
+    width: 75%;
+  }
+  .col-lg-10 {
+    width: 83.33%;
+  }
+  .col-lg-11 {
+    width: 91.66%;
+  }
+  .col-lg-12 {
+    width: 100%;
+  }
+}
+
+@media screen and (min-width: 1200px) {
+  main {
+    width: calc(100% - 600px);
+  }
+
+  // @media only screen and (min-width: 1200px) {
+  // main {
+  //   width: calc(100% - 400px);
+  // }
+}

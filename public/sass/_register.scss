@@ -1,0 +1,30 @@
+.wrapper {
+  width: 60%;
+  padding-inline: 10px;
+  margin: 0px auto;
+  display: flex;
+  align-self: center;
+  align-content: center;
+  flex-flow: row nowrap;
+  justify-content: center;
+  gap: 10px;
+  padding-block: 6.25rem;
+  .asides,
+  .block {
+    flex: 50%;
+    background: $white;
+    border-radius: $border-radius;
+    padding: 1.25rem;
+  }
+  .block {
+    box-shadow: rgba(14, 30, 37, 0.12) 0px 2px 4px 0px,
+      rgba(14, 30, 37, 0.32) 0px 2px 16px 0px;
+  }
+  .inline {
+    display: flex;
+    justify-content: space-between;
+    :nth-child(1) {
+      margin-right: 0.625rem;
+    }
+  }
+}

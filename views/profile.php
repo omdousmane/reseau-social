@@ -1,70 +1,95 @@
 <?php
-require_once '../controllers/auth-order.php';
+require '../config.php';
+$authDB = require_once '../models/security.php';
 $currentUser = $authDB->isLoggedin();
-
 if (!$currentUser) {
   header('Location: /');
 }
 ?>
-<!DOCTYPE html>
+<!doctype html>
 <html lang="fr">
 
 <head>
-  <?php require_once '../views/includes/head.php' ?>
-  <link rel="stylesheet" href="../public/css/layout/index.css">
-  <title>Profile</title>
+  <?php require "./includes/head.php" ?>
 </head>
 
 <body>
-  <div class="container">
-    <header class="header-top bg-secondary" id="header">
-      <div class="header-logo">
-        <div>
-          <div class="rotate-center text-center">Azure Guinée</div>
-          <div> fruits & légume</div>
+
+  <?php require "./includes/header.php" ?>
+
+  <main>
+    <article class="topbar row my-40">
+      <form class="topbar__form col-12" method="POST">
+        <div class="user w-25 mr-20">
+          <img src="/public/img/icons/user-img.svg" class="" alt="user">
         </div>
-      </div>
-      <div class="header-search">
-        <input type="text" name="search" placeholder="search"><i class="fas fa-search"></i>
-      </div>
-      <?php require_once '../views/includes/header.php' ?>
-    </header>
-    <div class="nav-link">
-      <a href="/views/index.php"> <i class="fas fa-house-user"></i>Acceuil</a> <span>/</span>
-      <a href="/views/order.php">Commande</a>
+        <div class="form-floating post-area col-8 mr-20">
+          <textarea class="form-control" placeholder="Crée un Post" id="floatingTextarea"></textarea>
+          <label for="floatingTextarea">Crée un Post</label>
+        </div>
+        <select class="form-select  col-2" aria-label="Default select example">
+          <option selected>Categories</option>
+          <option value="1">One</option>
+          <option value="2">Two</option>
+          <option value="3">Three</option>
+        </select>
+      </form>
+
+    </article>
+    <div class="row">
+      <article class="col-12 main-categories">
+        <section class="categories--content">
+          1
+        </section>
+        <section class="categories--content">
+          2
+        </section>
+        <section class="categories--content">
+          3
+        </section>
+        <section class="categories--content">
+          4
+        </section>
+      </article>
     </div>
-    <main class="main-container" id="main">
-      <div class="content">
-        <div class="block p-20 form-container">
-          <h1>Connexion</h1>
-          <form action="" , method="POST" id="form-submit">
-            <div class="form-control">
-              <label for="email">Email</label>
-              <input type="email" name="email" id="email" value="<?= $email ?? '' ?>"><i
-                class="fas env fa-envelope-square"></i>
-              <?php if ($errors['email']) : ?>
-              <p class="text-danger"><?= $errors['email'] ?></p>
-              <?php endif; ?>
-            </div>
-            <div class="form-control">
-              <label for="password">Mot de passe</label>
-              <input type="password" name="password" id="password" value=""><i class="fas env fa-unlock-alt"></i>
-              <?php if ($errors['password']) : ?>
-              <p class="text-danger"><?= $errors['password'] ?></p>
-              <?php endif; ?>
-            </div>
-            <div class="form-actions">
-              <a href="/" class="btn btn-danger"> Annuler</a>
-              <button class="btn btn-primary" type="submit">Connexion</button>
-            </div>
-          </form>
-        </div>
+    <h3 class="mb-40-mx-10">PUBLICATIONS POPULAIRES</h3>
+
+    <!-- 2eme block -->
+    <div class="row block-posts">
+      <div class="col-8 col-lg-8 block-post">
+        <section class="posts">
+          Lorem ipsum dolor, sit amet consectetur adipisicing elit. Eum voluptates nesciunt dolorum voluptatum quod,
+          saepe
+          accusantium dicta veniam ut temporibus sed sit perspiciatis. Eaque soluta beatae, necessitatibus sed nam
+          facere?
+        </section>
+        <section class="posts">
+          Lorem ipsum dolor, sit amet consectetur adipisicing elit. Eum voluptates nesciunt dolorum voluptatum quod,
+          saepe
+          accusantium dicta veniam ut temporibus sed sit perspiciatis. Eaque soluta beatae, necessitatibus sed nam
+          facere?
+        </section>
       </div>
-    </main>
-    <?php require_once '../views/includes/footer.php' ?>
+      <div class="col-4 col-lg-4 block-aside mb-40">
+        <section class=" aside mb-20">
+          Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quod temporibus iste laborum ullam, corrupti at
+          reiciendis eius, ex sit molestias possimus vitae animi quae a repudiandae hic saepe voluptates. Nihil.
+        </section>
+        <section class=" aside mb-20">
+          Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quod temporibus iste laborum ullam, corrupti at
+          reiciendis eius, ex sit molestias possimus vitae animi quae a repudiandae hic saepe voluptates. Nihil.
+          Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quod temporibus iste laborum ullam, corrupti at
+          reiciendis eius, ex sit molestias possimus vitae animi quae a repudiandae hic saepe voluptates. Nihil.
+        </section>
+      </div>
+    </div>
+  </main>
+  <!-- le chat -->
+
+  <div class="container-chat-message">
+    <?php //require "./chat.php" 
+    ?>
   </div>
-  <!-- <script src="../public/js/order.js"></script> -->
-  <script src="../public/js/request.js"></script>
 
 </body>
 

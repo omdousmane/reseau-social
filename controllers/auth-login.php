@@ -1,47 +1,63 @@
 <?php
-
-require_once '../config.php';
-require_once '../models/database.php';
+require '../config.php';
 $authDB = require_once '../models/security.php';
 
-const ERROR_REQUIRED = 'Veuillez renseigner ce champ';
-const ERROR_PASSWORD_TOO_SHORT = 'Le mot de passe doit faire au moins 6 caractères';
-const ERROR_PASSWORD_MISMATCH = 'Le mot de passe n\'est pas valide';
-const ERROR_EMAIL_INVALID = 'L\'email n\'est pas valide';
-const ERROR_EMAIL_UNKOWN = 'L\'email n\'est pas enregistrée';
-
 $errors = [
-    'email' => '',
+    'speudo' => '',
     'password' => '',
+    'full' => '',
 ];
+$speudo   = $input['speudo'] ?? '';
+$password = $_POST['password'] ?? '';
+
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $input = filter_input_array(INPUT_POST, [
-        'email' => FILTER_SANITIZE_EMAIL,
+        'speudo' => FILTER_SANITIZE_SPECIAL_CHARS,
     ]);
-    $email = $input['email'] ?? '';
+    $speudo   = $input['speudo'] ?? '';
     $password = $_POST['password'] ?? '';
 
-    if (!$email) {
-        $errors['email'] = ERROR_REQUIRED;
-    } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        $errors['email'] = ERROR_EMAIL_INVALID;
+    // verification du speudo
+    if (!$speudo) {
+        $errors['speudo'] = ERROR_REQUIRED;
+    } elseif (mb_strlen($speudo) < 2) {
+        $errors['speudo'] = ERROR_TOO_SHORT;
     }
+    if (preg_match("/{@}/i", $speudo)) {
+        if (!filter_var($speudo, FILTER_VALIDATE_EMAIL)) {
+            $errors['speudo'] = ERROR_EMAIL_INVALID;
+        }
+    }
+    // verification du mdp
+
     if (!$password) {
         $errors['password'] = ERROR_REQUIRED;
     } elseif (mb_strlen($password) < 6) {
         $errors['password'] = ERROR_PASSWORD_TOO_SHORT;
     }
+
+    // verification du tableu d'erreur
     if (empty(array_filter($errors, fn ($e) => $e !== ''))) {
-        $user = $authDB->getUserFromEmail($email);
-        if (!$user) {
-            $errors['email'] = ERROR_EMAIL_UNKOWN;
+        $userByMail   = $authDB->getUserFromEmails($speudo);
+        $userBySpeudo = $authDB->getUserFromspeudo($speudo);
+        if ($userByMail == false) {
+            if ($userBySpeudo == false) {
+                $errors['full'] = 'Ni l\'email ni le speudo n\'est enregristrer';
+            } else {
+                if (!password_verify($password, $userBySpeudo['password'])) {
+                    $errors['password'] = ERROR_PASSWORD_MISMATCH;
+                } else {
+                    $authDB->login($userBySpeudo['id_user']);
+                    header('Location: /views/profile.php');
+                }
+            }
         } else {
-            if (!password_verify($password, $user['password'])) {
+            if (!password_verify($password, $userByMail['password'])) {
                 $errors['password'] = ERROR_PASSWORD_MISMATCH;
             } else {
-                $authDB->login($user['id_user']);
-                header('Location: index.php');
+                $authDB->login($userByMail['id_user']);
+                header('Location: /views/profile.php');
             }
         }
     }

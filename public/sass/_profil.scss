@@ -1,0 +1,13 @@
+.topbar {
+  background-color: $white;
+  border-radius: $border-radius;
+  padding-inline: 1.25rem;
+
+  &__form {
+    padding-block: 2rem;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+}

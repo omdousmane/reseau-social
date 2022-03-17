@@ -1,0 +1,106 @@
+.header {
+  background-color: $white;
+  padding: 15px;
+  position: relative;
+  width: 100%;
+  margin-bottom: 1.875rem;
+  position: fixed;
+  box-shadow: #e5e5e5 0px 25px 20px -20px;
+  z-index: 9999999999;
+}
+.logo {
+  font-family: "Yuji Syuku", serif;
+  font-size: 1.125rem;
+  color: $primary;
+  text-decoration: none;
+}
+
+.active {
+  background-color: darken($primary, 10);
+}
+.hiddin {
+  display: none;
+}
+.show {
+  display: block;
+}
+#burger {
+  width: 30px;
+  height: 2px;
+  background: $primary;
+
+  display: inline-block;
+  position: relative;
+}
+#burger::before,
+#burger::after {
+  content: "";
+  width: 30px;
+  height: 2px;
+  background: $primary;
+  display: inline-block;
+  position: absolute;
+  transform-origin: center;
+  transition: all 0.3s ease;
+}
+#burger::before {
+  top: -7px;
+}
+#burger::after {
+  top: 7px;
+}
+
+#burger.open {
+  background: transparent;
+  color: $primary;
+}
+#burger.open::before {
+  transform: rotate(45deg);
+  top: 0;
+}
+#burger.open::after {
+  transform: rotate(-45deg);
+  top: 0;
+}
+li {
+  list-style: none;
+}
+
+ul {
+  background: #ffffff;
+  position: absolute;
+  width: 30%;
+  right: 0;
+  top: 80%;
+  padding: 10px 0;
+  transform: scaleY(0);
+  transform-origin: center top;
+  transition: all 0.3s ease;
+}
+ul.open {
+  transform: scaleY(1);
+}
+ul li {
+  padding: 20px;
+  text-align: left;
+}
+
+/* For mobile phones: */
+[class*="col-"] {
+  width: 100%;
+}
+.header-desktop {
+  display: none;
+}
+.header-mobile {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+  align-items: center;
+  .ms-mobile {
+    display: block;
+  }
+  form {
+    margin-right: 20px;
+  }
+}

@@ -1,68 +1,74 @@
-<?php require_once '../controllers/auth-login.php';
-var_dump(VIEW);
-?>
+<?php require_once '../controllers/auth-login.php'; ?>
 <!DOCTYPE html>
 <html lang="fr">
-<!-- var_dump(VIEW); -->
 
 <head>
-  <?php require_once VIEW . '/includes/head.php' ?>
-  <title>Connexion</title>
+  <?php require "includes/head.php" ?>
+  <title>Inscription</title>
 </head>
 
 <body>
-  <div class="container">
-    <header class="header-top bg-secondary" id="header">
-      <div class="header-logo">
-        <div>
-          <div class="rotate-center text-center">Azure Guinée</div>
-          <div> fruits & légume</div>
-        </div>
+  <?php require "includes/header.php" ?>
+
+  <div class="wrapper">
+    <aside class="block asides">
+      <p>
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Optio, laboriosam quibusdam ipsa unde tenetur
+        veritatis
+        natus, sint aperiam, a porro ab! Eum beatae perspiciatis animi earum omnis? Vero, at porro.
+      </p>
+      <div id="essai">
       </div>
-
-      <div class="header-search">
-        <input type="search" name="search" placeholder="search"><i class="fas fa-search"></i>
+    </aside>
+    <div class="block">
+      <a href="#">
+        <div class="logo">Straight Talk</div>
+      </a>
+      <h3 class="modal-title text-center" id="exampleModalLabel">Connexion</h3>
+      <?php if ($errors['full']) : ?>
+      <div class="alert text-center alert-danger alert-dismissible fade show" role="alert">
+        <strong>ATTENTION</strong><?php echo $errors['full'] ?>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
       </div>
+      <?php endif; ?>
+      <div class="modal-body">
+        <form action="" , method="POST" id="form-submit">
+          <div class="">
+            <label for="recipient-speudo" class="col-form-label">Mail ou Speudo:</label>
+            <input type="text" value="<?php echo $speudo ?? '' ?>"
+              class="form-control form-submit <?php echo $speudo ? 'is-valid' : '' ?> <?= $errors['speudo'] || $errors['full'] ? 'is-invalid' : '' ?>"
+              name="speudo" id="recipient-speudo">
+            <div class="list"></div>
+            <?php if ($errors['speudo']) : ?>
+            <p class="text-danger invalid-feedback fff"><?php echo $errors['speudo'] ?></p>
+            <?php endif; ?>
 
-      <?php require_once VIEW . '/includes/header.php' ?>
-
-    </header>
-    <div class="nav-link">
-      <a href="/index.php">Acceuil</a> <span>/</span>
-      <a href="/views/login.php">Connexion</a>
+          </div>
+          <div class="mb-3">
+            <label for="recipient-password" class="col-form-label">Password:</label>
+            <input type="password" value="<?php echo $password ?? '' ?>"
+              class="form-control form-submit <?php echo $password  ? 'is-valid' : '' ?> <?php echo $errors['password']  || $errors['full'] ? 'is-invalid' : '' ?>"
+              name="password" id="password" data-toggle="password" data-size="sm">
+            <?php if ($errors['password']) : ?>
+            <p class="text-danger"><?= $errors['password'] ?></p>
+            <?php endif; ?>
+          </div>
+          <div class="modal-more mb-20">
+            <div class="form-check form-switch">
+              <input class="form-check-input form-submit" type="checkbox" role="switch" name="remember"
+                id="flexSwitchCheckDefault">
+              <label class="form-check-label" for="flexSwitchCheckDefault">Se souvenir de moi </label>
+            </div>
+            <div class="more">
+              Pas encore de compte? <a href="/views/register.php">Inscription</a>
+            </div>
+          </div>
+          <div class="modal-footer mb-3">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+            <button type="submit" class="btn btn-primary">Envoyer</button>
+          </div>
+        </form>
+      </div>
     </div>
-    <main id="main">
-
-      <div class="content">
-        <div class="block p-20 form-container">
-          <h1>Connexion</h1>
-          <form action="" , method="POST" id="form-submit">
-            <div class="form-control">
-              <label for="email">Email</label>
-              <input type="email" name="email" id="email" value="<?= $email ?? '' ?>"><i
-                class="fas env fa-envelope-square"></i>
-              <?php if ($errors['email']) : ?>
-              <p class="text-danger"><?= $errors['email'] ?></p>
-              <?php endif; ?>
-            </div>
-            <div class="form-control">
-              <label for="password">Mot de passe</label>
-              <input type="password" name="password" id="password" value=""><i class="fas env fa-unlock-alt"></i>
-              <?php if ($errors['password']) : ?>
-              <p class="text-danger"><?= $errors['password'] ?></p>
-              <?php endif; ?>
-            </div>
-            <div class="form-actions">
-              <a href="/" class="btn btn-danger"> Annuler</a>
-              <button class="btn btn-primary" type="submit">Connexion</button>
-            </div>
-          </form>
-        </div>
-      </div>
-    </main>
-    <?php require_once '../views/includes/footer.php' ?>
   </div>
-  <script src="../public/js/script.js"></script>
-</body>
-
-</html>
+  <?php require "includes/footer.php" ?>

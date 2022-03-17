@@ -1,132 +1,109 @@
-<?php require_once '../controllers/auth-register.php' ?>
-
+<?php require_once '../controllers/auth-register.php'; ?>
 <!DOCTYPE html>
 <html lang="fr">
 
 <head>
-  <?php require_once '../views/includes/head.php' ?>
+  <?php require "includes/head.php" ?>
   <title>Inscription</title>
 </head>
 
 <body>
-  <div class="container">
-    <header class="header-top bg-secondary" id="header">
-      <div class="header-logo">
-        <div>
-          <div class="rotate-center text-center">Azure Guinée</div>
-          <div> fruits & légume</div>
-        </div>
-      </div>
-      <div class="header-search">
-        <input type="text" name="search" placeholder="search"><i class="fas fa-search"></i>
-      </div>
+  <?php require "includes/header.php" ?>
+  <div class="wrapper mt-20">
+    <aside class="asides block">
+      <p>
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Optio, laboriosam quibusdam ipsa unde tenetur
+        veritatis
+        natus, sint aperiam, a porro ab! Eum beatae perspiciatis animi earum omnis? Vero, at porro.
+      </p>
+    </aside>
+    <div class="block <?= $_SERVER['REQUEST_URI'] === '/views/register.php' ? '' : 'modal' ?> fade" id="inscription"
+      tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <a href="#">
+              <div class="logo">Straight Talk</div>
+            </a>
+          </div>
+          <h3 class="modal-title text-center" id="exampleModalLabel">Inscription</h3>
+          <div class="modal-body">
+            <form action="" , method="POST" id="form-submit">
+              <div class="inline">
+                <div>
+                  <label for="firstname" class="col-form-label">Nom:</label>
+                  <input type="text" value="<?= $firstname ?? '' ?>"
+                    class="form-control <?= $firstname ? 'is-valid' : '' ?> <?= $errors['firstname'] ? 'is-invalid' : '' ?>"
+                    name="firstname" id="recipient-firstname">
+                  <?php if ($errors['firstname']) : ?>
+                  <p class="text-danger"><?= $errors['firstname'] ?></p>
+                  <?php endif; ?>
+                </div>
 
-      <?php require_once '../views/includes/header.php' ?>
-    </header>
-    <div class="nav-link">
-      <a href="/index.php">Acceuil</a>
-      <hr>
-      <a href="/views/register.php">Inscription</a>
-    </div>
-    <main id="main">
-
-      <div class="content">
-        <div class="block p-20 form-container">
-          <h1 class="text-center">Inscription</h1>
-          <form action="" , method="POST">
-            <div class="form-control">
-              <label for="lastname">Nom</label>
-              <input type="text" name="lastname" id="lastname" value="<?= $lastname ?? '' ?>">
-              <?php if ($errors['lastname']) : ?>
-              <p class="text-danger"><?= $errors['lastname'] ?></p>
-              <?php endif; ?>
-            </div>
-            <div class="form-control">
-              <label for="firstname">Prénom</label>
-              <input type="text" name="firstname" id="firstname" value="<?= $firstname ?? '' ?>">
-              <?php if ($errors['firstname']) : ?>
-              <p class="text-danger"><?= $errors['firstname'] ?></p>
-              <?php endif; ?>
-            </div>
-
-            <div class="form-control">
-              <label for="email">Email</label>
-              <input type="email" name="email" id="email" value="<?= $email ?? '' ?>">
-              <?php if ($errors['email']) : ?>
-              <p class="text-danger"><?= $errors['email'] ?></p>
-              <?php endif; ?>
-            </div>
-
-            <div class="form-line">
-              <div class="form-control">
-                <label for="adresse">Adresse</label>
-                <input type="text" name="adresse" id="adresse" value="<?= $adresse ?? '' ?>">
-                <?php if ($errors['adresse']) : ?>
-                <p class="text-danger"><?= $errors['adresse'] ?></p>
+                <div>
+                  <label for="recipient-lastname" class="col-form-label">Prénom:</label>
+                  <input type="text" value="<?= $lastname ?? '' ?>"
+                    class=" form-control <?= $lastname ? 'is-valid' : '' ?> <?= $errors['lastname'] ? 'is-invalid' : '' ?>"
+                    name="lastname" id="recipient-lastname">
+                  <?php if ($errors['lastname']) : ?>
+                  <p class="text-danger"><?= $errors['lastname'] ?></p>
+                  <?php endif; ?>
+                </div>
+              </div>
+              <div class="">
+                <label for="recipient-speudo" class="col-form-label">Speudo:</label>
+                <input type="text" value="<?= $speudo ?? '' ?>"
+                  class="form-control <?= $speudo ? 'is-valid' : '' ?> <?= $errors['speudo'] ? 'is-invalid' : '' ?>"
+                  name="speudo" id="recipient-speudo">
+                <?php if ($errors['speudo']) : ?>
+                <p class="text-danger"><?= $errors['speudo'] ?></p>
                 <?php endif; ?>
               </div>
-              <div class="form-control">
-                <label for="town">Ville</label>
-                <input type="text" name="town" id="town" value="<?= $town ?? '' ?>">
-                <?php if ($errors['town']) : ?>
-                <p class="text-danger"><?= $errors['town'] ?></p>
+              <div class="">
+                <label for="recipient-email" class="col-form-label">Mail:</label>
+                <input type="email" value="<?= $email ?? '' ?>"
+                  class="form-control <?= $email ? 'is-valid' : '' ?> <?= $errors['email'] ? 'is-invalid' : '' ?>"
+                  name="email" id="recipient-email">
+                <?php if ($errors['email']) : ?>
+                <p class="text-danger"><?= $errors['email'] ?></p>
                 <?php endif; ?>
               </div>
-            </div>
-
-            <div class="form-line">
-              <div class="form-control">
-                <label for="portable">Portable</label>
-                <input type="text" name="portable" id="portable" value="<?= $portable ?? '' ?>">
-                <?php if ($errors['portable']) : ?>
-                <p class="text-danger"><?= $errors['portable'] ?></p>
-                <?php endif; ?>
-              </div>
-
-              <div class="form-control">
-                <label for="office">Bureau</label>
-                <input type="text" name="office" id="office" value="<?= $office ?? '' ?>">
-                <?php if ($errors['office']) : ?>
-                <p class="text-danger"><?= $errors['office'] ?></p>
-                <?php endif; ?>
-              </div>
-            </div>
-
-            <div class="form-control">
-              <label for="company">Entreprise</label>
-              <input type="text" name="company" id="company" value="<?= $company ?? '' ?>">
-              <?php if ($errors['company']) : ?>
-              <p class="text-danger"><?= $errors['company'] ?></p>
-              <?php endif; ?>
-            </div>
-            <div class="form-line">
-              <div class="form-control">
-                <label for="password">Mot de passe</label>
-                <input type="password" name="password" id="password">
+              <div class="">
+                <label for="recipient-password" class="col-form-label">Password:</label>
+                <input type="password" value="<?= $password ?? '' ?>"
+                  class="form-control <?= $password ? 'is-valid' : '' ?> <?= $errors['password'] ? 'is-invalid' : '' ?>"
+                  name="password" id="password" data-toggle="password">
                 <?php if ($errors['password']) : ?>
                 <p class="text-danger"><?= $errors['password'] ?></p>
                 <?php endif; ?>
               </div>
-              <div class="form-control">
-                <label for="confirmpassword">Confirmation Mot de passe</label>
-                <input type="password" name="confirmpassword" id="confirmpassword">
+              <div class="mb-3">
+                <label for="recipient-password-confirm" class="col-form-label">Confirmer Password:</label>
+                <input type="password" value="<?= $confirmpassword ?? '' ?>"
+                  class="form-control <?= $confirmpassword ? 'is-valid' : '' ?> <?= $errors['confirmpassword'] ? 'is-invalid' : '' ?>"
+                  name="confirmpassword" id="confirmpassword" data-toggle="password">
                 <?php if ($errors['confirmpassword']) : ?>
                 <p class="text-danger"><?= $errors['confirmpassword'] ?></p>
                 <?php endif; ?>
               </div>
-            </div>
-            <div class="form-actions">
-              <a href="/" class="btn btn-danger"> Annuler</a>
-              <button class="btn btn-primary" type="submit">Connexion</button>
-            </div>
-          </form>
+              <div class="modal-more">
+                <div class="form-check form-switch">
+                  <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
+                  <label class="form-check-label" for="flexSwitchCheckDefault">Se souvenir de moi </label>
+                </div>
+                <div class="more">
+                  Deja membre? <a href="/views/login.php">Connexion</a>
+                </div>
+              </div>
+              <div class="modal-footer mb-3">
+                <button type="reset" class="btn btn-secondary">Fermer</button>
+                <button type="submit" class="btn btn-primary">Envoyer</button>
+              </div>
+            </form>
+          </div>
+
         </div>
       </div>
-    </main>
-    <?php //require_once '../views/includes/footer.php' 
-        ?>
+    </div>
   </div>
-  <script src="../public/js/script.js"></script>
-</body>
-
-</html>
+  <?php require "includes/footer.php" ?>

@@ -8,25 +8,33 @@ class AuthDB
     private PDOStatement $statementReadUserFromEmail;
     private PDOStatement $statementCreateSession;
     private PDOStatement $statementDeleteSession;
+    private PDOStatement $statementReadUserFromEmails;
+    private PDOStatement $statementReadUserSpeudo;
 
     function __construct(PDO $pdo)
     {
-        $this->statementRegister = $pdo->prepare('INSERT INTO user VALUES (
+
+        $this->statementRegister = $pdo->prepare('INSERT INTO user(
+            id_user,
+            firstname,
+            lastname,
+            speudo,
+            email,
+            password
+            )VALUES(
             DEFAULT,
             :firstname,
             :lastname,
+            :speudo,
             :email,
-            :adress,
-            :town,
-            :portable,
-            :office,
-            :company,
             :password
-        )');
+            )');
 
         $this->statementReadSession = $pdo->prepare('SELECT * FROM session WHERE id=:id');
         $this->statementReadUser = $pdo->prepare('SELECT * FROM user WHERE id_user=:id');
-        $this->statementReadUserFromEmail = $pdo->prepare('SELECT * FROM user WHERE email=:email');
+        $this->statementReadUserFromEmail = $pdo->prepare('SELECT email FROM user WHERE email LIKE :email ORDER BY email ASC;');
+        $this->statementReadUserFromEmails = $pdo->prepare('SELECT * FROM user WHERE email=:email');
+        $this->statementReadUserSpeudo = $pdo->prepare('SELECT * FROM user WHERE speudo=:speudo');
         $this->statementCreateSession = $pdo->prepare('INSERT INTO session VALUES (
             :id,
             :userid
@@ -48,15 +56,12 @@ class AuthDB
 
     function register(array $user): void
     {
+        var_dump($user);
         $hashedPassword = password_hash($user['password'], PASSWORD_ARGON2I);
         $this->statementRegister->bindValue(':firstname', $user['firstname']);
         $this->statementRegister->bindValue(':lastname', $user['lastname']);
+        $this->statementRegister->bindValue(':speudo', $user['speudo']);
         $this->statementRegister->bindValue(':email', $user['email']);
-        $this->statementRegister->bindValue(':adress', $user['adresse']);
-        $this->statementRegister->bindValue(':town', $user['town']);
-        $this->statementRegister->bindValue(':portable', $user['portable']);
-        $this->statementRegister->bindValue(':office', $user['office']);
-        $this->statementRegister->bindValue(':company', $user['company']);
         $this->statementRegister->bindValue(':password', $hashedPassword);
         $this->statementRegister->execute();
         return;
@@ -93,9 +98,21 @@ class AuthDB
 
     function getUserFromEmail(string $email): array | false
     {
-        $this->statementReadUserFromEmail->bindValue(':email', $email);
+        $this->statementReadUserFromEmail->bindValue(':email', $email . '%');
         $this->statementReadUserFromEmail->execute();
-        return $this->statementReadUserFromEmail->fetch();
+        return $this->statementReadUserFromEmail->fetchall();
+    }
+    function getUserFromEmails(string $email): array | false
+    {
+        $this->statementReadUserFromEmails->bindValue(':email', $email);
+        $this->statementReadUserFromEmails->execute();
+        return $this->statementReadUserFromEmails->fetch();
+    }
+    function getUserFromspeudo(string $speudo): array | false
+    {
+        $this->statementReadUserSpeudo->bindValue(':speudo', $speudo);
+        $this->statementReadUserSpeudo->execute();
+        return $this->statementReadUserSpeudo->fetch();
     }
 }
 return new AuthDB($pdo);

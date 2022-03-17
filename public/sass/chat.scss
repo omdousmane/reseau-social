@@ -1,0 +1,263 @@
+@import url(https://fonts.googleapis.com/css?family=Lato:400,700);
+@import "bootstrap/functions";
+@import "bootstrap/variables";
+
+// $green: #86bb71;
+// // $blue: #94c2ed;
+// $orange: #e38968;
+// $gray: #92959e;
+$primary: #e51c25;
+$white: #fff;
+$bg-body: #e5e5e5;
+$border-radius: 10px;
+
+*,
+*:before,
+*:after {
+  box-sizing: border-box;
+}
+li {
+  list-style: none;
+}
+
+body {
+  background: $white;
+  font: 14px/20px "Lato", Arial, sans-serif;
+  padding: 40px 0;
+  color: black;
+}
+
+.container {
+  display: flex;
+  justify-content: space-between;
+  margin: 0 auto;
+  width: 550px;
+  background: $bg-body;
+  border-radius: 5px;
+}
+
+.people-list {
+  width: 50%;
+  border: 2px solid $bg-body;
+  .search {
+    padding: 20px;
+    ::placeholder {
+      color: black;
+    }
+  }
+
+  input {
+    border-radius: 3px;
+    border: none;
+    padding: 14px;
+    color: black;
+    background: $white;
+    width: 90%;
+    font-size: 14px;
+  }
+
+  .list {
+    // overflow-y: scroll;
+    // height: 250px;
+    width: 100%;
+    margin-left: 0;
+    padding-inline: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    .clearfix {
+      width: 100%;
+      align-items: flex-start;
+      display: flex;
+      flex-flow: row nowrap;
+      justify-content: space-between;
+      margin-bottom: 1.25rem;
+      .content-img {
+        margin-right: 10px;
+        width: 40px;
+        height: 40px;
+        img {
+          max-width: 100%;
+        }
+      }
+      .about {
+        width: calc(100% - 50px);
+      }
+    }
+  }
+
+  .status {
+    color: $bg-body;
+  }
+}
+
+.chat {
+  width: 80%;
+  background: #f2f5f8;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+  color: #434651;
+
+  .chat-header {
+    padding: 20px;
+    border-bottom: 2px solid white;
+
+    img {
+      float: left;
+    }
+
+    .chat-about {
+      float: left;
+      padding-left: 10px;
+      margin-top: 6px;
+    }
+
+    .chat-with {
+      font-weight: bold;
+      font-size: 16px;
+    }
+
+    .chat-num-messages {
+      color: $bg-body;
+    }
+
+    .fa-star {
+      float: right;
+      color: #d8dadf;
+      font-size: 20px;
+      margin-top: 12px;
+    }
+  }
+
+  .chat-history {
+    padding: 30px 30px 20px;
+    border-bottom: 2px solid white;
+    overflow-y: scroll;
+    height: 250px;
+
+    .message-data {
+      margin-bottom: 15px;
+    }
+
+    .message-data-time {
+      color: darken($bg-body, 15%);
+      padding-left: 6px;
+    }
+
+    .message {
+      color: $white;
+      padding: 18px 20px;
+      line-height: 20px;
+      font-size: 14px;
+      border-radius: 7px;
+      margin-bottom: 30px;
+      width: 90%;
+      position: relative;
+
+      &:after {
+        bottom: 100%;
+        left: 10%;
+        border: solid transparent;
+        content: " ";
+        height: 0;
+        width: 0;
+        position: absolute;
+        pointer-events: none;
+        border-bottom-color: $green;
+        border-width: 10px;
+        margin-left: -12px;
+      }
+    }
+
+    .my-message {
+      background: $green;
+    }
+
+    .other-message {
+      background: $blue;
+
+      &:after {
+        border-bottom-color: $blue;
+        left: 92%;
+      }
+    }
+  }
+
+  .chat-message {
+    padding: 10px;
+
+    textarea {
+      width: 100%;
+      border: none;
+      padding: 5px 10px;
+      font: 14px/22px "Lato", Arial, sans-serif;
+      margin-bottom: 10px;
+      border-radius: 5px;
+      resize: none;
+    }
+
+    .fa-file-o,
+    .fa-file-image-o {
+      font-size: 14px;
+      color: gray;
+      cursor: pointer;
+    }
+
+    button {
+      float: right;
+      color: $blue;
+      font-size: 14px;
+      text-transform: uppercase;
+      border: none;
+      cursor: pointer;
+      font-weight: bold;
+      background: $primary;
+      border-radius: 0.625rem;
+
+      &:hover {
+        color: darken($blue, 7%);
+      }
+    }
+  }
+}
+
+.online,
+.offline,
+.me {
+  margin-right: 3px;
+  font-size: 10px;
+}
+
+.online {
+  color: $green;
+}
+
+.offline {
+  color: $orange;
+}
+
+.me {
+  color: $blue;
+}
+
+.align-left {
+  text-align: left;
+}
+
+.align-right {
+  text-align: right;
+}
+
+.float-right {
+  float: right;
+}
+
+.clearfix:after {
+  visibility: hidden;
+  display: block;
+  font-size: 0;
+  content: " ";
+  clear: both;
+  height: 0;
+}
