@@ -1,12 +1,4 @@
- <?php
-  // require '../config.php';
-  // $authDB = require_once '../models/security.php';
-  // $currentUser = $authDB->isLoggedin();
-  $currentUser = $currentUser ?? false;
-
-  var_dump($currentUser);
-
-  ?>
+ <?php $currentUser = $currentUser ?? false; ?>
  <header class="header">
    <nav class="header-desktop">
      <a href="/index.php" class="logo">
@@ -26,10 +18,18 @@
      </form>
 
      <?php if ($_SERVER['REQUEST_URI'] === '/views/profile.php') : ?>
-     <a href="#">
-       <img src="/public/img/icons/bi_arrow-up-right-circle.svg" class="mxy-40" alt="user">
+     <a href="#" class="dropdown">
+       <img src="/public/img/icons/bi_arrow-up-right-circle.svg" class="mxy-40 dropdown-toggle"
+         data-bs-toggle="dropdown">
+
+       <ul class="dropdown-menu">
+         <li><a class="dropdown-item" href="#">Link 1</a></li>
+         <li><a class="dropdown-item" href="#">Link 2</a></li>
+         <li><a class="dropdown-item" href="#">Link 3</a></li>
+       </ul>
      </a>
-     <a href="/views/chat.php" class="message-show" title="Message">
+
+     <a href="#" class="message-show" title="Message">
        <img src="/public/img/icons/eva_message-circle-fill.svg" class="mxy-40" alt="user">
      </a>
      <a href="#">
@@ -66,7 +66,6 @@
            <a href="#about">Connexion</a>
            <a href="#contact">Inscription</a>
            <a href="#home">Home</a>
-
          </div>
        </div>
      </div>

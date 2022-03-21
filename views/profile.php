@@ -1,10 +1,11 @@
 <?php
-require '../config.php';
-$authDB = require_once '../models/security.php';
-$currentUser = $authDB->isLoggedin();
+require_once '../controllers/auth-post.php';
+require_once '../controllers/manager.php';
+$currentUser = $authDBs->isLoggedin();
 if (!$currentUser) {
   header('Location: /');
 }
+// var_dump($currentUser);
 ?>
 <!doctype html>
 <html lang="fr">
@@ -24,22 +25,30 @@ if (!$currentUser) {
           <img src="/public/img/icons/user-img.svg" class="" alt="user">
         </div>
         <div class="form-floating post-area col-8 mr-20">
-          <textarea class="form-control" placeholder="Crée un Post" id="floatingTextarea"></textarea>
-          <label for="floatingTextarea">Crée un Post</label>
+          <textarea class="content-text form-control" placeholder="Crée un Post" name="content"
+            id="floatingTextarea"></textarea>
+          <label class="label" for="floatingTextarea">Crée un Post</label>
         </div>
-        <select class="form-select  col-2" aria-label="Default select example">
-          <option selected>Categories</option>
-          <option value="1">One</option>
-          <option value="2">Two</option>
-          <option value="3">Three</option>
+        <select class="form-select col-2 mr-20" name="category" aria-label="Default select example">
+          <?php foreach ($categories as $categorie) : ?>
+          <option><?php echo $categorie['nameCat'] ?></option>
+          <?php endforeach; ?>
         </select>
+        <input type="text" class="form-control form-input col-2 mr-20" name="title" placeholder="Crée un Post"
+          id="floatingTextarea">
+        <button type="submit" class="btn btn-primary form-submit">Poster</button>
       </form>
-
     </article>
     <div class="row">
       <article class="col-12 main-categories">
         <section class="categories--content">
-          1
+          <?php if ($currentUser) : ?>
+          <?php echo $currentUser['firstname'] ?>
+          <br>
+          <?php echo $currentUser['lastname'] ?>
+          <br>
+          <?php echo $currentUser['speudo'] ?>
+          <?php endif ?>
         </section>
         <section class="categories--content">
           2
@@ -55,41 +64,164 @@ if (!$currentUser) {
     <h3 class="mb-40-mx-10">PUBLICATIONS POPULAIRES</h3>
 
     <!-- 2eme block -->
-    <div class="row block-posts">
-      <div class="col-8 col-lg-8 block-post">
-        <section class="posts">
-          Lorem ipsum dolor, sit amet consectetur adipisicing elit. Eum voluptates nesciunt dolorum voluptatum quod,
-          saepe
-          accusantium dicta veniam ut temporibus sed sit perspiciatis. Eaque soluta beatae, necessitatibus sed nam
-          facere?
-        </section>
-        <section class="posts">
-          Lorem ipsum dolor, sit amet consectetur adipisicing elit. Eum voluptates nesciunt dolorum voluptatum quod,
-          saepe
-          accusantium dicta veniam ut temporibus sed sit perspiciatis. Eaque soluta beatae, necessitatibus sed nam
-          facere?
-        </section>
+    <div class="row block-posts col-8 col-lg-8 block-post">
+      <!-- <div class="col-8 col-lg-8 block-post"> -->
+      <?php foreach ($posts as $post) :  ?>
+
+      <!-- les postes -->
+      <div class="card text-white bg-primary mb-3 posts">
+        <div class="card-header"><?php echo $post['title'] ?></div>
+        <div class="card-body">
+          <?php if ($categorie['id'] === $post['idCat']) : ?>
+          <h5 class="card-title"><?php echo $categorie['nameCat'] ?></h5>
+          <?php endif; ?>
+          <p class="card-text">
+            <?php echo $post['content'] ?>
+          </p>
+        </div>
+        <div class="middle-nav-comment">
+          <div class="icons">
+            <div class="icons-img">
+              <img src="/public/img/icons/eva_message-circle-fill.svg" class="like" alt="user">
+              <img src="/public/img/icons/bi_arrow-up-right-circle.svg" class="comment-toggle">
+            </div>
+            <div class="comment">
+              commmentaire
+            </div>
+          </div>
+          <form action="" class="row form-comment container">
+            <input type="text" class="form-control col-8 mr-20" name="title" placeholder="Commenter..."
+              id="floatingTextarea">
+            <button type="submit" class="btn btn-primary col-3">commenter</button>
+          </form>
+        </div>
       </div>
-      <div class="col-4 col-lg-4 block-aside mb-40">
-        <section class=" aside mb-20">
-          Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quod temporibus iste laborum ullam, corrupti at
-          reiciendis eius, ex sit molestias possimus vitae animi quae a repudiandae hic saepe voluptates. Nihil.
-        </section>
-        <section class=" aside mb-20">
-          Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quod temporibus iste laborum ullam, corrupti at
-          reiciendis eius, ex sit molestias possimus vitae animi quae a repudiandae hic saepe voluptates. Nihil.
-          Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quod temporibus iste laborum ullam, corrupti at
-          reiciendis eius, ex sit molestias possimus vitae animi quae a repudiandae hic saepe voluptates. Nihil.
-        </section>
-      </div>
+      <?php endforeach;  ?>
+
+    </div>
+
+    <div class="col-4 col-lg-4 block-aside mb-40">
+      <section class=" aside mb-20">
+        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quod temporibus iste laborum ullam, corrupti at
+        reiciendis eius, ex sit molestias possimus vitae animi quae a repudiandae hic saepe voluptates. Nihil.
+      </section>
+      <section class=" aside mb-20">
+        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quod temporibus iste laborum ullam, corrupti at
+        reiciendis eius, ex sit molestias possimus vitae animi quae a repudiandae hic saepe voluptates. Nihil.
+        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quod temporibus iste laborum ullam, corrupti at
+        reiciendis eius, ex sit molestias possimus vitae animi quae a repudiandae hic saepe voluptates. Nihil.
+      </section>
     </div>
   </main>
   <!-- le chat -->
+  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+    Launch demo modal
+  </button>
 
-  <div class="container-chat-message">
-    <?php //require "./chat.php" 
-    ?>
-  </div>
+
+  <article class="show-chat panel-chat">
+    <div class="people-list" id="people-list">
+      <form class="" method="POST">
+        <div class="search">
+          <input type="search" name="search" name="search" placeholder="search..." />
+        </div>
+      </form>
+      <div class="list">
+
+        <?php foreach ($listOnlines as $listOnline) : ?>
+        <?php $userOnlines = $authDbChat->getUserById($listOnline['userid']); ?>
+        <?php foreach ($userOnlines as $userOnline) : ?>
+
+        <div class="clearfix">
+          <div class="content-img">
+            <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/195612/chat_avatar_01.jpg" alt="avatar" />
+          </div>
+          <div class="about">
+            <div class="name"><?php echo $userOnline['firstname'] . ' ' . $userOnline['lastname'] ?></div>
+            <div class="status">
+              <i class="fa fa-circle online"></i> online
+            </div>
+          </div>
+        </div>
+        <?php endforeach ?>
+        <?php endforeach ?>
+      </div>
+    </div>
+
+    <div class="chat">
+      <div class="chat-header clearfix">
+        <div class="chat-about">
+          <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/195612/chat_avatar_01_green.jpg" alt="avatar" />
+          <?php if ($currentUser['id_user'] == $userOnline['id_user']) : ?>
+          <div class="chat-with"><?php echo $userOnline['firstname'] . ' ' . $userOnline['lastname'] ?></div>
+          <?php endif ?>
+          <!-- <div class="chat-num-messages">already 1 902 messages</div> -->
+        </div>
+        <i class="fa fa-star"></i>
+      </div> <!-- end chat-header -->
+
+      <!-- chat history -->
+      <div class="chat-history">
+        <div>
+          <div class="message-data">
+            <span class="message-data-name"><i class="fa fa-circle online"></i> Vincent</span>
+            <span class="message-data-time">10:12 AM, Today</span>
+          </div>
+          <div class="message my-message">
+            Are we meeting today? Project has been already finished and I have results to show you.
+          </div>
+        </div>
+
+        <div class="clearfix">
+          <div class="message-data align-right">
+            <span class="message-data-time">10:14 AM, Today</span> &nbsp; &nbsp;
+            <span class="message-data-name">Olia</span> <i class="fa fa-circle me"></i>
+
+          </div>
+          <div class="message other-message float-right">
+            Well I am not sure. The rest of the team is not here yet. Maybe in an hour or so? Have you faced any
+            problems at the last phase of the project?
+          </div>
+        </div>
+        <div>
+          <div class="message-data">
+            <span class="message-data-name"><i class="fa fa-circle online"></i> Vincent</span>
+            <span class="message-data-time">10:12 AM, Today</span>
+          </div>
+          <div class="message my-message">
+            Are we meeting today? Project has been already finished and I have results to show you.
+          </div>
+        </div>
+
+        <div class="clearfix">
+          <div class="message-data align-right">
+            <span class="message-data-time">10:14 AM, Today</span> &nbsp; &nbsp;
+            <span class="message-data-name">Olia</span> <i class="fa fa-circle me"></i>
+
+          </div>
+          <div class="message other-message float-right">
+            Well I am not sure. The rest of the team is not here yet. Maybe in an hour or so? Have you faced any
+            problems at the last phase of the project?
+          </div>
+        </div>
+        <!-- <ul class="chat-contents">
+
+        </ul> -->
+      </div> <!-- end chat-history -->
+      <form class="container-chat" action="/controllers/chat.php?task=write" method="POST">
+        <!-- <label for="validationCustom01" class="form-label">Author</label>
+        <input type="text" class="input" name="author" id="author" id="validationCustom01"> -->
+
+        <div class="chat-message">
+          <textarea class="form-control" placeholder="Message" name="content" id="content"></textarea>
+          <button type="submit" class="">
+            <img src="/public/img/icons/send.svg" alt="envoyer">
+          </button>
+        </div> <!-- end chat-message -->
+        <!-- </div> end chat -->
+      </form> <!-- end container -->
+    </div>
+  </article>
 
 </body>
 

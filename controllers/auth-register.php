@@ -6,6 +6,7 @@ $errors = [
     'firstname' => '',
     'lastname' => '',
     'speudo' => '',
+    'images' => '',
     'email' => '',
     'password' => '',
     'confirmpassword' => ''
@@ -13,6 +14,7 @@ $errors = [
 $firstname = $input['firstname'] ?? '';
 $lastname  = $input['lastname'] ?? '';
 $speudo    = $input['speudo'] ?? '';
+$images     = $input['images'] ?? '';
 $email     = $input['email'] ?? '';
 $password  = $_POST['password'] ?? '';
 $confirmpassword = $_POST['confirmpassword'] ?? '';
@@ -22,11 +24,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         'firstname' => FILTER_SANITIZE_SPECIAL_CHARS,
         'lastname' => FILTER_SANITIZE_SPECIAL_CHARS,
         'speudo' => FILTER_SANITIZE_SPECIAL_CHARS,
+        'images' => FILTER_SANITIZE_SPECIAL_CHARS,
         'email' => FILTER_SANITIZE_EMAIL,
     ]);
     $firstname = $input['firstname'] ?? '';
     $lastname  = $input['lastname'] ?? '';
     $speudo    = $input['speudo'] ?? '';
+    $images    = $input['images'] ?? '';
     $email     = $input['email'] ?? '';
     $password  = $_POST['password'] ?? '';
     $confirmpassword = $_POST['confirmpassword'] ?? '';
@@ -46,6 +50,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $errors['speudo'] = ERROR_REQUIRED;
     } elseif (mb_strlen($speudo) < 2) {
         $errors['speudo'] = ERROR_TOO_SHORT;
+    }
+
+    if (!$images) {
+        $errors['images'] = ERROR_REQUIRED;
+    } elseif (mb_strlen($images) < 2) {
+        $errors['images'] = ERROR_TOO_SHORT;
     }
 
     if (!$email) {
@@ -73,6 +83,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             'firstname' => $firstname,
             'lastname' => $lastname,
             'speudo' => $speudo,
+            'images' => $images,
             'email' => $email,
             'password' => $password
         ]);

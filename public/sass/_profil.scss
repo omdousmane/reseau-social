@@ -10,4 +10,39 @@
     justify-content: space-between;
     align-items: center;
   }
+  .container-chat-message {
+    display: none;
+  }
+  .form-floating {
+    display: block;
+  }
+  .form-select {
+    display: block;
+  }
+  .form-input {
+    display: none;
+  }
+  .form-submit {
+    display: none;
+  }
+}
+.form-comment {
+  display: flex;
+}
+.icons {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-flow: row nowrap;
+  .icons-img {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-around;
+    width: 100px;
+    margin: 0 !important;
+  }
+  img {
+    width: 20px;
+  }
 }

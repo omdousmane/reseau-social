@@ -39,6 +39,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // verification du tableu d'erreur
     if (empty(array_filter($errors, fn ($e) => $e !== ''))) {
+        $status = 'on';
         $userByMail   = $authDB->getUserFromEmails($speudo);
         $userBySpeudo = $authDB->getUserFromspeudo($speudo);
         if ($userByMail == false) {
@@ -48,7 +49,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 if (!password_verify($password, $userBySpeudo['password'])) {
                     $errors['password'] = ERROR_PASSWORD_MISMATCH;
                 } else {
-                    $authDB->login($userBySpeudo['id_user']);
+                    $authDB->login([
+                        'userId' => $userBySpeudo['id_user'],
+                        'status' => $status
+                    ]);
                     header('Location: /views/profile.php');
                 }
             }
@@ -56,7 +60,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if (!password_verify($password, $userByMail['password'])) {
                 $errors['password'] = ERROR_PASSWORD_MISMATCH;
             } else {
-                $authDB->login($userByMail['id_user']);
+                $authDB->login([
+                    'userId' => $userByMail['id_user'],
+                    'status' => $status
+                ]);
                 header('Location: /views/profile.php');
             }
         }

@@ -60,6 +60,15 @@
                 <?php endif; ?>
               </div>
               <div class="">
+                <label for="recipient-images" class="col-form-label">Images:</label>
+                <input type="text" value="<?= $images ?? '' ?>"
+                  class="form-control <?= $images ? 'is-valid' : '' ?> <?= $errors['images'] ? 'is-invalid' : '' ?>"
+                  name="images" id="recipient-images">
+                <?php if ($errors['images']) : ?>
+                <p class="text-danger"><?= $errors['images'] ?></p>
+                <?php endif; ?>
+              </div>
+              <div class="">
                 <label for="recipient-email" class="col-form-label">Mail:</label>
                 <input type="email" value="<?= $email ?? '' ?>"
                   class="form-control <?= $email ? 'is-valid' : '' ?> <?= $errors['email'] ? 'is-invalid' : '' ?>"

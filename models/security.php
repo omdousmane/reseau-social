@@ -13,12 +13,12 @@ class AuthDB
 
     function __construct(PDO $pdo)
     {
-
         $this->statementRegister = $pdo->prepare('INSERT INTO user(
             id_user,
             firstname,
             lastname,
             speudo,
+            images,
             email,
             password
             )VALUES(
@@ -26,6 +26,7 @@ class AuthDB
             :firstname,
             :lastname,
             :speudo,
+            :images,
             :email,
             :password
             )');
@@ -35,18 +36,26 @@ class AuthDB
         $this->statementReadUserFromEmail = $pdo->prepare('SELECT email FROM user WHERE email LIKE :email ORDER BY email ASC;');
         $this->statementReadUserFromEmails = $pdo->prepare('SELECT * FROM user WHERE email=:email');
         $this->statementReadUserSpeudo = $pdo->prepare('SELECT * FROM user WHERE speudo=:speudo');
-        $this->statementCreateSession = $pdo->prepare('INSERT INTO session VALUES (
-            :id,
-            :userid
+        $this->statementCreateSession = $pdo->prepare('INSERT INTO session(
+            `id`,
+            `userid`, 
+            `status`
+        )
+         VALUES (
+            :sessionid,
+            :userid,
+            :status
         )');
         $this->statementDeleteSession = $pdo->prepare('DELETE FROM session WHERE id=:id');
     }
 
-    function login(string $userId): void
+    function login(array $session): void
     {
+        var_dump($session);
         $sessionId = bin2hex(random_bytes(32));
-        $this->statementCreateSession->bindValue(':id', $sessionId);
-        $this->statementCreateSession->bindValue(':userid', $userId);
+        $this->statementCreateSession->bindValue(':sessionid', $sessionId);
+        $this->statementCreateSession->bindValue(':userid', $session['userId']);
+        $this->statementCreateSession->bindValue(':status', $session['status']);
         $this->statementCreateSession->execute();
         $signature = hash_hmac('sha256', $sessionId, '4cd30a3e9bd36ae867730f712e15b4d29d0473916d5d61e8425346f277c63cf9');
         setcookie('session', $sessionId, time() + 60 * 60 * 24 * 14, '', '', false, true);
@@ -56,11 +65,12 @@ class AuthDB
 
     function register(array $user): void
     {
-        var_dump($user);
+        // var_dump($user);
         $hashedPassword = password_hash($user['password'], PASSWORD_ARGON2I);
         $this->statementRegister->bindValue(':firstname', $user['firstname']);
         $this->statementRegister->bindValue(':lastname', $user['lastname']);
         $this->statementRegister->bindValue(':speudo', $user['speudo']);
+        $this->statementRegister->bindValue(':images', $user['images']);
         $this->statementRegister->bindValue(':email', $user['email']);
         $this->statementRegister->bindValue(':password', $hashedPassword);
         $this->statementRegister->execute();

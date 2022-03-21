@@ -170,6 +170,7 @@ footer {
   display: block;
 }
 
+/**/
 .my-40 {
   margin: 40px 0 40px 0;
 }
@@ -238,21 +239,6 @@ footer {
   justify-content: space-between;
 }
 
-.modal {
-  color: #000;
-}
-
-.text-center {
-  text-align: center;
-}
-
-.modal-header a {
-  text-decoration: none;
-}
-.modal-header .logo {
-  font-size: 1.5rem;
-}
-
 .topbar {
   background-color: #fff;
   border-radius: 10px;
@@ -264,6 +250,43 @@ footer {
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+.topbar .container-chat-message {
+  display: none;
+}
+.topbar .form-floating {
+  display: block;
+}
+.topbar .form-select {
+  display: block;
+}
+.topbar .form-input {
+  display: none;
+}
+.topbar .form-submit {
+  display: none;
+}
+
+.form-comment {
+  display: flex;
+}
+
+.icons {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-flow: row nowrap;
+}
+.icons .icons-img {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-around;
+  width: 100px;
+  margin: 0 !important;
+}
+.icons img {
+  width: 20px;
 }
 
 .wrapper {

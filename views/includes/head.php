@@ -16,6 +16,10 @@
 <!-- CSS -->
 <link href="/public/css/style.css" rel="stylesheet">
 
+<!-- CSS CHAT-->
+
+<link rel="stylesheet" href="/public/css/chat.css">
+
 <!-- JS -->
 <script defer src="/public/js/bootstrap.js"></script>
 <script defer src="/public/js/jquery.js"></script>
@@ -23,3 +27,4 @@
 <script defer src="/public/js/menu.js"></script>
 <script defer src="/public/js/search.js"></script>
 <script defer src="/public/js/chat.js"></script>
+<script defer src="/public/js/profil.js"></script>

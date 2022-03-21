@@ -1,152 +1,98 @@
-@import url(https://fonts.googleapis.com/css?family=Lato:400,700);
-@import "bootstrap/functions";
-@import "bootstrap/variables";
-
-// $green: #86bb71;
-// // $blue: #94c2ed;
-// $orange: #e38968;
-// $gray: #92959e;
-$primary: #e51c25;
-$white: #fff;
-$bg-body: #e5e5e5;
-$border-radius: 10px;
-
-*,
-*:before,
-*:after {
-  box-sizing: border-box;
-}
-li {
-  list-style: none;
-}
-
-body {
-  background: $white;
-  font: 14px/20px "Lato", Arial, sans-serif;
-  padding: 40px 0;
-  color: black;
-}
-
-.container {
-  display: flex;
+.show-chat {
+  position: fixed;
+  bottom: 10px;
+  right: 10px;
+  height: 500px;
+  width: 450px;
+  background: white;
+  display: none;
   justify-content: space-between;
-  margin: 0 auto;
-  width: 550px;
-  background: $bg-body;
-  border-radius: 5px;
+  border-radius: 10px;
 }
-
 .people-list {
-  width: 50%;
-  border: 2px solid $bg-body;
+  border-radius: 10px;
+  font-size: 14px;
+  padding: 10px;
+  margin-bottom: 10px;
+  overflow-y: scroll;
+  width: 350px;
+  display: flex;
+  color: white;
+  background: lighten(#e51c25, 15);
+  flex-flow: column nowrap;
+
   .search {
-    padding: 20px;
-    ::placeholder {
-      color: black;
+    margin: 10px auto;
+    width: 80%;
+    input {
+      width: 100%;
+      border-radius: 10px;
+      border: none;
+      padding: 10px;
+      font-size: 14px;
     }
   }
-
-  input {
-    border-radius: 3px;
-    border: none;
-    padding: 14px;
-    color: black;
-    background: $white;
-    width: 90%;
-    font-size: 14px;
-  }
-
   .list {
-    // overflow-y: scroll;
-    // height: 250px;
-    width: 100%;
-    margin-left: 0;
-    padding-inline: 10px;
     display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-
+    flex-flow: column nowrap;
+    gap: 10px;
     .clearfix {
-      width: 100%;
-      align-items: flex-start;
       display: flex;
-      flex-flow: row nowrap;
       justify-content: space-between;
-      margin-bottom: 1.25rem;
+      align-items: center;
+      flex-flow: row nowrap;
       .content-img {
+        width: 20%;
         margin-right: 10px;
-        width: 40px;
-        height: 40px;
+        border-radius: 50%;
         img {
-          max-width: 100%;
+          border-radius: 50%;
         }
       }
       .about {
-        width: calc(100% - 50px);
+        width: 100%;
+        margin-left: 15px;
       }
     }
   }
-
-  .status {
-    color: $bg-body;
-  }
 }
-
 .chat {
-  width: 80%;
-  background: #f2f5f8;
-  border-top-right-radius: 5px;
-  border-bottom-right-radius: 5px;
-  color: #434651;
-
+  width: 100%;
+  margin-left: 10px;
   .chat-header {
-    padding: 20px;
-    border-bottom: 2px solid white;
-
-    img {
-      float: left;
-    }
+    margin: 10px;
+    font-size: 14px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid whites;
 
     .chat-about {
-      float: left;
-      padding-left: 10px;
-      margin-top: 6px;
-    }
-
-    .chat-with {
-      font-weight: bold;
-      font-size: 16px;
-    }
-
-    .chat-num-messages {
-      color: $bg-body;
-    }
-
-    .fa-star {
-      float: right;
-      color: #d8dadf;
-      font-size: 20px;
-      margin-top: 12px;
+      align-items: center;
+      display: flex;
+      width: 90%;
+      margin-right: 20px;
+      img {
+        margin-right: 10px;
+      }
     }
   }
-
   .chat-history {
     padding: 30px 30px 20px;
-    border-bottom: 2px solid white;
+    border-bottom: 2px solid whites;
     overflow-y: scroll;
-    height: 250px;
-
+    height: 350px;
     .message-data {
       margin-bottom: 15px;
     }
 
     .message-data-time {
-      color: darken($bg-body, 15%);
+      color: darken(#e5e5e5, 15%);
       padding-left: 6px;
     }
 
     .message {
-      color: $white;
+      color: #fff;
       padding: 18px 20px;
       line-height: 20px;
       font-size: 14px;
@@ -164,64 +110,25 @@ body {
         width: 0;
         position: absolute;
         pointer-events: none;
-        border-bottom-color: $green;
+        border-bottom-color: #86bb71;
         border-width: 10px;
         margin-left: -12px;
       }
     }
-
-    .my-message {
-      background: $green;
-    }
-
-    .other-message {
-      background: $blue;
-
-      &:after {
-        border-bottom-color: $blue;
-        left: 92%;
-      }
-    }
+  }
+  .my-message {
+    background: #5cbd36;
   }
 
-  .chat-message {
-    padding: 10px;
+  .other-message {
+    background: lighten(#e51c25, 10);
 
-    textarea {
-      width: 100%;
-      border: none;
-      padding: 5px 10px;
-      font: 14px/22px "Lato", Arial, sans-serif;
-      margin-bottom: 10px;
-      border-radius: 5px;
-      resize: none;
-    }
-
-    .fa-file-o,
-    .fa-file-image-o {
-      font-size: 14px;
-      color: gray;
-      cursor: pointer;
-    }
-
-    button {
-      float: right;
-      color: $blue;
-      font-size: 14px;
-      text-transform: uppercase;
-      border: none;
-      cursor: pointer;
-      font-weight: bold;
-      background: $primary;
-      border-radius: 0.625rem;
-
-      &:hover {
-        color: darken($blue, 7%);
-      }
+    &:after {
+      border-bottom-color: #94c2ed;
+      left: 92%;
     }
   }
 }
-
 .online,
 .offline,
 .me {
@@ -230,34 +137,51 @@ body {
 }
 
 .online {
-  color: $green;
+  color: #86bb71;
 }
 
 .offline {
-  color: $orange;
+  color: #e38968;
 }
 
 .me {
-  color: $blue;
+  color: #94c2ed;
 }
+.chat-message {
+  // padding: 10px;
 
-.align-left {
-  text-align: left;
-}
+  // background: red !important;
+  display: flex;
+  textarea {
+    width: 100%;
+    border: none;
+    padding: 10px 10px;
+    font: 14px/18px "Lato", Arial, sans-serif;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    resize: none;
+    margin-right: 5px;
+  }
 
-.align-right {
-  text-align: right;
-}
+  // .fa-file-o,
+  // .fa-file-image-o {
+  //   font-size: 14px;
+  //   color: grays;
+  //   cursor: pointer;
+  // }
 
-.float-right {
-  float: right;
-}
+  button {
+    font-size: 12px;
+    text-transform: uppercase;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+    background: #e51c25;
+    border-radius: 0.625rem;
+    padding: 10px;
 
-.clearfix:after {
-  visibility: hidden;
-  display: block;
-  font-size: 0;
-  content: " ";
-  clear: both;
-  height: 0;
+    &:hover {
+      color: darken(#e51c25, 7%);
+    }
+  }
 }

@@ -24,6 +24,7 @@ const ERROR_SPEUDO_UNKOWN   = 'Le speudo \'est pas enregistrée';
 const ERROR_EMAIL_EXIST     = 'L\'email est pas enregistrée';
 const ERROR_EMAIL_INVALID   = 'L\'email n\'est pas valide';
 const ERROR_PASSWORD_MISMATCH = 'Le mot de passe n\'est pas valide';
+const ERROR_CONTENT_TOO_SHORT = 'L\'article est trop court';
 
 /**********************************produits************************************************/
 
