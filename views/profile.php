@@ -5,7 +5,9 @@ $currentUser = $authDBs->isLoggedin();
 if (!$currentUser) {
   header('Location: /');
 }
-// var_dump($currentUser);
+$listOnlines = $authDbChat->onlineLoggedin($currentUser['id_user']);
+
+// var_dump($listOnlines);
 ?>
 <!doctype html>
 <html lang="fr">
@@ -19,6 +21,7 @@ if (!$currentUser) {
   <?php require "./includes/header.php" ?>
 
   <main>
+
     <article class="topbar row my-40">
       <form class="topbar__form col-12" method="POST">
         <div class="user w-25 mr-20">
@@ -28,6 +31,9 @@ if (!$currentUser) {
           <textarea class="content-text form-control" placeholder="Crée un Post" name="content"
             id="floatingTextarea"></textarea>
           <label class="label" for="floatingTextarea">Crée un Post</label>
+          <?php if ($errors['content']) : ?>
+          <p class="text-danger"><?= $errors['content'] ?></p>
+          <?php endif; ?>
         </div>
         <select class="form-select col-2 mr-20" name="category" aria-label="Default select example">
           <?php foreach ($categories as $categorie) : ?>
@@ -38,6 +44,8 @@ if (!$currentUser) {
           id="floatingTextarea">
         <button type="submit" class="btn btn-primary form-submit">Poster</button>
       </form>
+
+
     </article>
     <div class="row">
       <article class="col-12 main-categories">
@@ -72,9 +80,11 @@ if (!$currentUser) {
       <div class="card text-white bg-primary mb-3 posts">
         <div class="card-header"><?php echo $post['title'] ?></div>
         <div class="card-body">
+          <?php foreach ($categories as $categorie) : ?>
           <?php if ($categorie['id'] === $post['idCat']) : ?>
           <h5 class="card-title"><?php echo $categorie['nameCat'] ?></h5>
           <?php endif; ?>
+          <?php endforeach; ?>
           <p class="card-text">
             <?php echo $post['content'] ?>
           </p>
@@ -114,11 +124,32 @@ if (!$currentUser) {
     </div>
   </main>
   <!-- le chat -->
+  <!-- Button trigger modal -->
   <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
     Launch demo modal
   </button>
 
-
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          ...
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
   <article class="show-chat panel-chat">
     <div class="people-list" id="people-list">
       <form class="" method="POST">
@@ -127,20 +158,27 @@ if (!$currentUser) {
         </div>
       </form>
       <div class="list">
-
         <?php foreach ($listOnlines as $listOnline) : ?>
         <?php $userOnlines = $authDbChat->getUserById($listOnline['userid']); ?>
         <?php foreach ($userOnlines as $userOnline) : ?>
-
         <div class="clearfix">
           <div class="content-img">
             <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/195612/chat_avatar_01.jpg" alt="avatar" />
           </div>
           <div class="about">
+
             <div class="name"><?php echo $userOnline['firstname'] . ' ' . $userOnline['lastname'] ?></div>
+
             <div class="status">
               <i class="fa fa-circle online"></i> online
             </div>
+            <!-- form de selection du membre connecté -->
+            <form class="form">
+              <button type="text" class="talk btn btn-secondary"
+                value="<?php echo $currentUser['id_user'] . '' . $userOnline['id_user'] . $currentUser['lastname'] ?>">
+                discuter
+              </button>
+            </form>
           </div>
         </div>
         <?php endforeach ?>
@@ -149,77 +187,36 @@ if (!$currentUser) {
     </div>
 
     <div class="chat">
-      <div class="chat-header clearfix">
+      <div class="chat-header">
         <div class="chat-about">
           <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/195612/chat_avatar_01_green.jpg" alt="avatar" />
-          <?php if ($currentUser['id_user'] == $userOnline['id_user']) : ?>
-          <div class="chat-with"><?php echo $userOnline['firstname'] . ' ' . $userOnline['lastname'] ?></div>
+          <?php if ($currentUser['id_user'] === $userOnline['id_user']) : ?>
+          <div class="chat-with linkUserOnline"><?php echo $userOnline['firstname'] . ' ' . $userOnline['lastname'] ?>
+            <i class="fa fa-circle online"></i> online
+          </div>
           <?php endif ?>
-          <!-- <div class="chat-num-messages">already 1 902 messages</div> -->
         </div>
         <i class="fa fa-star"></i>
-      </div> <!-- end chat-header -->
+      </div>
+      <!-- end chat-header -->
 
       <!-- chat history -->
       <div class="chat-history">
-        <div>
-          <div class="message-data">
-            <span class="message-data-name"><i class="fa fa-circle online"></i> Vincent</span>
-            <span class="message-data-time">10:12 AM, Today</span>
-          </div>
-          <div class="message my-message">
-            Are we meeting today? Project has been already finished and I have results to show you.
-          </div>
+        <div class="chat-contents">
+
         </div>
-
-        <div class="clearfix">
-          <div class="message-data align-right">
-            <span class="message-data-time">10:14 AM, Today</span> &nbsp; &nbsp;
-            <span class="message-data-name">Olia</span> <i class="fa fa-circle me"></i>
-
-          </div>
-          <div class="message other-message float-right">
-            Well I am not sure. The rest of the team is not here yet. Maybe in an hour or so? Have you faced any
-            problems at the last phase of the project?
-          </div>
-        </div>
-        <div>
-          <div class="message-data">
-            <span class="message-data-name"><i class="fa fa-circle online"></i> Vincent</span>
-            <span class="message-data-time">10:12 AM, Today</span>
-          </div>
-          <div class="message my-message">
-            Are we meeting today? Project has been already finished and I have results to show you.
-          </div>
-        </div>
-
-        <div class="clearfix">
-          <div class="message-data align-right">
-            <span class="message-data-time">10:14 AM, Today</span> &nbsp; &nbsp;
-            <span class="message-data-name">Olia</span> <i class="fa fa-circle me"></i>
-
-          </div>
-          <div class="message other-message float-right">
-            Well I am not sure. The rest of the team is not here yet. Maybe in an hour or so? Have you faced any
-            problems at the last phase of the project?
-          </div>
-        </div>
-        <!-- <ul class="chat-contents">
-
-        </ul> -->
-      </div> <!-- end chat-history -->
-      <form class="container-chat" action="/controllers/chat.php?task=write" method="POST">
-        <!-- <label for="validationCustom01" class="form-label">Author</label>
-        <input type="text" class="input" name="author" id="author" id="validationCustom01"> -->
-
+      </div>
+      <!-- end chat-history -->
+      <form id="form-chat">
         <div class="chat-message">
-          <textarea class="form-control" placeholder="Message" name="content" id="content"></textarea>
-          <button type="submit" class="">
+          <textarea class="form-control content" placeholder="Message" name="content" id="content"></textarea>
+          <button type="submit" class="send">
             <img src="/public/img/icons/send.svg" alt="envoyer">
           </button>
-        </div> <!-- end chat-message -->
-        <!-- </div> end chat -->
-      </form> <!-- end container -->
+        </div>
+        <!-- end chat-message -->
+      </form>
+      <!-- end container -->
     </div>
   </article>
 

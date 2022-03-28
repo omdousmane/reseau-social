@@ -1,100 +1,146 @@
-/**
- * fonction de recuperation de JSON des messages a afficher
- */
+// creation des variables globals
+var currentUser = "";
+var onlineUser = "";
+var currentUserLastName = "";
+let btns = document.querySelectorAll(".talk");
+btns.forEach((btn) => {
+  btn.addEventListener("click", (e) => {
+    e.preventDefault();
+    currentUser = e.target.value.substr(0, 2);
+    onlineUser = e.target.value.substr(2, 4);
+    currentUserLastName = e.target.value.substr(4, 14);
+
+    // console.log(currentUser);
+    console.log(currentUserLastName);
+
+    getMessages();
+  });
+});
+
+//envoie des donnée par post
+let form = document.getElementById("form-chat");
+form.addEventListener("submit", (e) => {
+  // 1. Elle doit stoper le submit du formulaire
+  e.preventDefault();
+
+  // 2. Elle doit récupérer les données du formulaire
+
+  var name = form.elements[0];
+  var content = name.value;
+
+  const data = {
+    currentUser: currentUser,
+    onlineUser: onlineUser,
+    content: content,
+  };
+  // 4. Elle doit configurer une requête ajax en POST et envoyer les données
+  const requeteAjax = new XMLHttpRequest();
+  requeteAjax.open("POST", "/controllers/chat.php");
+  requeteAjax.setRequestHeader(
+    "Content-Type",
+    "application/x-www-form-urlencoded"
+  );
+
+  requeteAjax.onreadystatechange = function () {
+    const resultat = requeteAjax.responseText;
+    name.value = "";
+    name.focus();
+    getMessages();
+  };
+
+  requeteAjax.send(
+    "currentUser=" +
+      data.currentUser +
+      "&onlineUser= " +
+      data.onlineUser +
+      "&content= " +
+      data.content
+  );
+
+  const interval = window.setInterval(getMessages, 1000);
+  getMessages();
+});
 
 function getMessages() {
-  const xhr = new XMLHttpRequest();
-  xhr.open("GET", "/controllers/chat.php");
+  // 1 recuperation des données en objets data
+  const data = {
+    currentUser: currentUser,
+    onlineUser: onlineUser,
+  };
 
-  xhr.onload = function () {
-    // const result = xhr.responseText;
-    var response = xhr.responseText;
-    response = JSON.parse(response);
-    // JSON.parse(result);
-    // console.log(response);
-    const html = response
+  // 1.2 Elle doit créer une requête AJAX pour se connecter au serveur, et notamment au fichier chat.php
+  const requeteAjax = new XMLHttpRequest();
+  requeteAjax.open(
+    "GET",
+    "/controllers/chat.php?currentUser=" +
+      data.currentUser +
+      "&onlineUser= " +
+      data.onlineUser,
+    true
+  );
+
+  // 2. Quand elle reçoit les données, il faut qu'elle les traite (en exploitant le JSON) et il faut qu'elle affiche ces données au format HTML
+  requeteAjax.onload = function () {
+    const resultat = JSON.parse(requeteAjax.responseText);
+    console.log(resultat);
+    const html = resultat
       .reverse()
       .map(function (messages) {
-        return `
-             <li class="clearfix">
-            <div class="message-data align-right">
-              <span class="message-data-time">${messages.created_at.substring(
-                11,
-                16
-              )}AM, Today</span> &nbsp; &nbsp;
-              <span class="message-data-name">${
-                messages.author
-              }</span> <i class="fa fa-circle me"></i>
-
+        if (messages.lastname === currentUserLastName) {
+          return `
+          <div class="messages">
+              <div class="message-data">
+                <span class="message-data-name">
+                  <i class="fa fa-circle online"></i>${currentUserLastName}
+                </span>
+                <span class="message-data-time">${messages.created_at.substring(
+                  11,
+                  16
+                )} AM, Today</span>
+              </div>
+            
+               <div class="message my-message">
+                 ${messages.content} 
+                </div>
             </div>
-            <div class="message other-message float-right">
-              ${messages.content}
+          `;
+        } else {
+          return `
+          <div class="messages">
+              <div class="message-data">
+                <span class="message-data-name">
+                  <i class="fa fa-circle online"></i>${messages.lastname}
+                </span>
+                <span class="message-data-time">${messages.created_at.substring(
+                  11,
+                  16
+                )} AM, Today</span>
+              </div>
+            
+               <div class="message other-message">
+                 ${messages.content} 
+                </div>
             </div>
-          </li>
-        `;
+          `;
+        }
       })
-      .join();
-
+      .join("");
     const message = document.querySelector(".chat-contents");
     message.innerHTML = html;
     message.scrollTop = message.scrollHeight;
   };
-  //envoie de la requete
-  xhr.send();
+
+  // 3. On envoie la requête
+  requeteAjax.send(null);
+  //   let odds = document.querySelectorAll(".chat-contents :nth-child(odd)");
+  //   let evens = document.querySelectorAll(".chat-contents :nth-child(even)");
+  //   // console.log(rendom);
+  //   odds.forEach((odd) => {
+  //     console.log("Ousmane");
+  //     odd.classList.toggle("other-message");
+  //   });
+  //   evens.forEach((even) => {
+  //     console.log("diallo");
+  //     even.classList.toggle("my-message");
+  //   });
 }
-// getMessages();
-/**
- * fonction d'envoie de nouveau messages
- */
-
-function postMessages(event) {
-  event.preventDefault();
-
-  const author = document.querySelector("#author");
-  const content = document.querySelector("#content");
-
-  const data = new FormData();
-  data.append("author", author.value);
-  data.append("content", content.value);
-  // console.log(data);
-
-  const xhr = new XMLHttpRequest();
-  xhr.open("POST", "/controllers/chat.php?task=write");
-  xhr.onload = function () {
-    content.value = "";
-    content.focus();
-    author.value = "";
-    author.focus();
-    getMessages();
-  };
-  xhr.send(data);
-}
-document.querySelector("form").addEventListener("submit", postMessages);
-const intval = window.setInterval(getMessages, 3000);
-getMessages();
-
-// apparution du chat
-const button = document.querySelector(".message-show");
-const showChat = document.querySelector(".show-chat");
-console.log(showChat);
-showChat.style.display = "none";
-
-button.addEventListener("click", () => {
-  // console.log(button);
-  console.log(showChat);
-
-  if (showChat.style.display === "none") {
-    showChat.style.display = "flex";
-    showChat.classList.add("container-chat-message");
-    // showChat.style.backgroundColor = "red";
-  } else {
-    showChat.style.display = "none";
-    showChat.classList.remove("container-chat-message");
-  }
-  // document.body.style.backgroundColor = "red";
-  // showChat.style.display = "block";
-
-  // setTimeout(() => {
-  //   showChat.classList.remove("container-chat-message");
-  // }, 2000);
-});

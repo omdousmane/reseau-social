@@ -19,19 +19,12 @@
 
      <?php if ($_SERVER['REQUEST_URI'] === '/views/profile.php') : ?>
      <a href="#" class="dropdown">
-       <img src="/public/img/icons/bi_arrow-up-right-circle.svg" class="mxy-40 dropdown-toggle"
-         data-bs-toggle="dropdown">
-
-       <ul class="dropdown-menu">
-         <li><a class="dropdown-item" href="#">Link 1</a></li>
-         <li><a class="dropdown-item" href="#">Link 2</a></li>
-         <li><a class="dropdown-item" href="#">Link 3</a></li>
-       </ul>
+       <img src="/public/img/icons/bi_arrow-up-right-circle.svg" class="mxy-40">
      </a>
 
-     <a href="#" class="message-show" title="Message">
+     <button class="message-show" title="Message">
        <img src="/public/img/icons/eva_message-circle-fill.svg" class="mxy-40" alt="user">
-     </a>
+     </button>
      <a href="#">
        <img src="/public/img/icons/akar-icons_plus.svg" title="Crée un Post" class="mxy-40" alt="user">
      </a>
@@ -56,11 +49,9 @@
        <div class="dropdown">
          <img src="/public/img/icons/userA.svg" onclick="myFunction()" class="dropbtn" alt="user">
          <div id="myDropdown" class="dropdown-content">
-           <a href="#home">
-             <div class="form-check form-switch">
-               <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
-               <label class="form-check-label" for="flexSwitchCheckDefault">Theme</label>
-             </div>
+           <a href="#" id="mode">
+             <i class="fas fa-moon"></i>
+             <span class="theme">Thème sombre</span>
            </a>
            <a href="/views/profile.php">Profil</a>
            <a href="#about">Connexion</a>

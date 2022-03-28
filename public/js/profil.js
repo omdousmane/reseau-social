@@ -24,7 +24,7 @@ post.addEventListener("keyup", () => {
 });
 
 selectInput.addEventListener("keyup", () => {
-  formSubmit.style.display = "block comment-toggle";
+  formSubmit.style.display = "block";
 });
 
 formComment.forEach((element) => {

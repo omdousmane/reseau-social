@@ -48,7 +48,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
   if (!$content) {
     $errors['content'] = ERROR_REQUIRED;
-  } elseif (mb_strlen($content) < 50) {
+  } elseif (mb_strlen($content) < 20) {
     $errors['content'] = ERROR_CONTENT_TOO_SHORT;
   }
 

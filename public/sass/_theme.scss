@@ -1,0 +1,19 @@
+#mode {
+  border: 1px;
+  border-radius: 15px;
+  // padding: 15px;
+  cursor: pointer;
+}
+
+.dark {
+  background-color: #112f41;
+  color: #000;
+}
+
+.dark #mode {
+  background: #144098;
+  color: #fff;
+}
+.dark h3 {
+  color: #fff;
+}

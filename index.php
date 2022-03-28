@@ -3,10 +3,10 @@ require 'config.php';
 $authDB = require_once 'models/security.php';
 $currentUser = $authDB->isLoggedin();
 
+var_dump($currentUser);
 // if (!$currentUser) {
 //   header('Location: /');
 // }
-var_dump($currentUser);
 
 ?>
 <!doctype html>

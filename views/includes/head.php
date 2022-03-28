@@ -28,3 +28,4 @@
 <script defer src="/public/js/search.js"></script>
 <script defer src="/public/js/chat.js"></script>
 <script defer src="/public/js/profil.js"></script>
+<script defer src="/public/js/theme.js"></script>

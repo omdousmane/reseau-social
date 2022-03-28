@@ -51,7 +51,7 @@ class AuthDB
 
     function login(array $session): void
     {
-        var_dump($session);
+        // var_dump($session);
         $sessionId = bin2hex(random_bytes(32));
         $this->statementCreateSession->bindValue(':sessionid', $sessionId);
         $this->statementCreateSession->bindValue(':userid', $session['userId']);

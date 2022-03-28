@@ -12,38 +12,56 @@
     function __construct(PDO $pdo)
     {
       $this->statementInsetChat = $pdo->prepare('INSERT INTO `messages`(
-		`author`,
-    `content`,
-    `created_at`
-		)
-		VALUES(
-		:author,
-    :content,
-    NOW()
-		)');
+      `id_smg`,
+      `idDestinataire`, 
+      `idEmetteur`, 
+      `content`, 
+      `created_at`
+      )VALUES(
+      DEFAULT,
+      :onlineUser,
+      :currentUser,
+      :content,
+      NOW()
+      )');
       $this->statementReadUser = $pdo->prepare('SELECT * FROM user WHERE id_user=:id');
-      $this->statementReadAllChat = $pdo->prepare('SELECT * FROM `messages` ORDER BY created_at DESC LIMIT 20');
-      $this->statementReadSessionOnline = $pdo->prepare('SELECT * FROM `session` WHERE `status`= "on"');
+      $this->statementReadAllChat = $pdo->prepare('SELECT messages.*, user.lastname
+                                                  FROM messages , user
+                                                  WHERE messages.idDestinataire = user.id_user
+                                                  AND idDestinataire IN (:onlineUser,:currentUser)
+                                                  AND idEmetteur IN (:currentUser, :onlineUser) 
+                                                  ORDER BY created_at DESC LIMIT 20');
+      $this->statementReadSessionOnline = $pdo->prepare('SELECT * FROM `session` WHERE `status`= "on" AND `userid` != :onlineUser');
     }
 
     public function registerMessages(array $messages)
     {
-      $this->statementInsetChat->bindValue(':author', $messages['author']);
+      $this->statementInsetChat->bindValue(':onlineUser', $messages['onlineUser']);
+      $this->statementInsetChat->bindValue(':currentUser', $messages['currentUser']);
       $this->statementInsetChat->bindValue(':content', $messages['content']);
-      $this->statementInsetChat->execute();
+      if ($this->statementInsetChat->execute()) {
+        return true;
+      } else {
+        return false;
+      }
     }
+
 
     // recuperation de tout les messages 
-    function getAllMessages(): array | false
+    function getAllMessages(array $messages): array | false
     {
+      $this->statementReadAllChat->bindValue(':onlineUser', (int) $messages['onlineUser']);
+      $this->statementReadAllChat->bindValue(':currentUser', (int) $messages['currentUser']);
       $this->statementReadAllChat->execute();
-      $user = $this->statementReadAllChat->fetchAll();
-      return $user ?? false;
+      $messages = $this->statementReadAllChat->fetchAll();
+      return $messages ?? false;
     }
 
+
     //recuperation des personnes connecter avec id non et prenom
-    function onlineLoggedin(): array | false
+    function onlineLoggedin(int $onlineUser): array | false
     {
+      $this->statementReadSessionOnline->bindValue(':onlineUser', $onlineUser);
       $this->statementReadSessionOnline->execute();
       $userOnline = $this->statementReadSessionOnline->fetchAll();
       return $userOnline ?? false;

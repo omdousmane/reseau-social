@@ -9,3 +9,20 @@ link.addEventListener("click", function (e) {
   burger.classList.toggle("open");
   ul.classList.toggle("open");
 });
+
+// affichage des messages
+const button = document.querySelector(".message-show");
+const showChat = document.querySelector(".show-chat");
+showChat.style.display = "none";
+
+button.addEventListener("click", () => {
+  // getMessages();
+
+  if (showChat.style.display === "none") {
+    showChat.style.display = "flex";
+    showChat.classList.add("container-chat-message");
+  } else {
+    showChat.style.display = "none";
+    showChat.classList.remove("container-chat-message");
+  }
+});
